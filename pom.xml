@@ -5,6 +5,17 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>tail</name>
   
+ 
+    <dependencies>
+  
+ <dependency>
+  		<groupId>org.apache.kafka</groupId>
+  		<artifactId>kafka-hadoop-producer</artifactId>
+  		<version>0.8.2.2</version>
+  	</dependency>
+    </dependencies> 
+    
+  
   
     <build> 
          <plugins> 
@@ -68,4 +79,5 @@
      </build> 
   
   
+
 </project>

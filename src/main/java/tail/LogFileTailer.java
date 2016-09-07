@@ -1,6 +1,10 @@
 package tail;
 
 import java.io.*;
+import kafka.javaapi.producer.Producer; 
+import kafka.producer.KeyedMessage; 
+import kafka.producer.ProducerConfig; 
+
 import java.util.*;
 
 /**
@@ -129,7 +133,12 @@ public class LogFileTailer extends Thread
             String line = file.readLine();
             while( line != null )
             {
-            System.out.println(line);
+        //    System.out.println(line);
+            	
+            	
+            	
+            	
+            	
               this.fireNewLogFileLine( line );
               line = file.readLine();
             }
