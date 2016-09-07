@@ -1,6 +1,7 @@
 package tail;
 
 import java.io.*;
+
 import kafka.javaapi.producer.Producer; 
 import kafka.producer.KeyedMessage; 
 import kafka.producer.ProducerConfig; 
@@ -16,13 +17,15 @@ import java.util.*;
  * sets of data, etc. This tailer simply fires notifications containing new log file lines, 
  * one at a time.
  */
-public class LogFileTailer extends Thread 
+public class LogFileTailer
 {
   /**
    * How frequently to check for file changes; defaults to 5 seconds
    */
   private long sampleInterval = 5000;
 
+  
+  
   /**
    * The log file to tail
    */
@@ -51,6 +54,8 @@ public class LogFileTailer extends Thread
   public LogFileTailer( File file )
   {
     this.logfile = file;
+    
+    
   }
 
   /**
@@ -91,8 +96,10 @@ public class LogFileTailer extends Thread
   {
     this.tailing = false;
   }
+  
+  
 
-  public void run()
+  public void run_1()
   {
     // The file pointer keeps track of where we are in the file
     long filePointer = 0;
@@ -112,8 +119,18 @@ public class LogFileTailer extends Thread
       // Start tailing
       this.tailing = true;
       RandomAccessFile file = new RandomAccessFile( logfile, "r" );
+      boolean k=true;
       while( this.tailing )
       {
+    
+    		
+    		  
+    		Properties props = new Properties(); 
+    	    props.put("metadata.broker.list", "kafka1:9092,kafkat2:9092,kafka3:9092"); 
+    	    props.put("serializer.class", "kafka.serializer.StringEncoder"); 
+    	    ProducerConfig  producerConfig = new ProducerConfig(props); 
+    	    Producer<String, String> producer = new Producer<String, String>(producerConfig); 
+
         try
         {  
           // Compare the length of the file to the file pointer
@@ -133,12 +150,11 @@ public class LogFileTailer extends Thread
             String line = file.readLine();
             while( line != null )
             {
-        //    System.out.println(line);
+        //    System.out.println(line);b
             	
-            	
-            	
-            	
-            	
+           		KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
+              	producer.send(message); 
+
               this.fireNewLogFileLine( line );
               line = file.readLine();
             }
@@ -146,7 +162,7 @@ public class LogFileTailer extends Thread
           }
 
           // Sleep for the specified interval
-          sleep( this.sampleInterval );
+     //     sleep( this.sampleInterval );
         }
         catch( Exception e )
         {

@@ -5,16 +5,16 @@ package tail;
 import java.util.*;
 import java.io.*;
 
-import kafka.javaapi.prboducer.Producer; 
+import kafka.javaapi.producer.Producer; 
 import kafka.producer.KeyedMessage; 
 import kafka.producer.ProducerConfig; 
- /**
+/**
 * Implements console-based log file tailing, or more specifically, tail following:
 * it is somewhat equivalent to the unix command "tail -f"
 */
 public class Tail implements LogFileTailerListener
 {
-/**
+/**b
 * The log file tailer
 */
 private LogFileTailer tailer;
@@ -26,7 +26,7 @@ public Tail( String filename )
 {
  tailer = new LogFileTailer( new File( filename ), 1000, false );
  tailer.addLogFileTailerListener( this );
- tailer.start();
+ tailer.run_1();
 }
 
 /**
@@ -37,6 +37,14 @@ public Tail( String filename )
 public void newLogFileLine(String line)
 {
 // System.out.println( line );
+	
+		KeyedMessage<String, String> message = new KeyedMessage<String, String>("topic1", line);   
+   		producer.send(message); 
+
+    	
+    	
+    	
+	
 }
 
 /**
@@ -49,12 +57,7 @@ public static void main( String[] args )
    System.out.println( "Usage: Tail <filename>" );
    System.exit( 0 );
  }
- Properties props = new Properties(); 
-          props.put("metadata.broker.list", "kafka1:9092,kafkat2:9092,kafka3:9092"); 
-          props.put("serializer.class", "kafka.serializer.StringEncoder"); 
-          ProducerConfig  producerConfig = new ProducerConfig(props); 
-          Producer<String, String> producer = new Producer<String, String>(producerConfig); 
-          String str; 
+
      
 
  Tail tail = new Tail( args[ 0 ] );
