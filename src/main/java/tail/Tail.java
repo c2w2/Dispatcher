@@ -33,7 +33,7 @@ public Tail( String filename )
 */
 public void newLogFileLine(String line)
 {
- System.out.println( line );
+// System.out.println( line );
 }
 
 /**
