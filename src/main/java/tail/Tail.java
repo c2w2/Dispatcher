@@ -38,10 +38,6 @@ public void newLogFileLine(String line)
 {
 // System.out.println( line );
 	
-		KeyedMessage<String, String> message = new KeyedMessage<String, String>("topic1", line);   
-   		producer.send(message); 
-
-    	
     	
     	
 	
