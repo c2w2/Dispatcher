@@ -2,9 +2,9 @@ package tail;
 
 import java.io.*;
 
-//import kafka.javaapi.producer.Producer; 
-//import kafka.producer.KeyedMessage; 
-//import kafka.producer.ProducerConfig; 
+import kafka.javaapi.producer.Producer; 
+import kafka.producer.KeyedMessage; 
+import kafka.producer.ProducerConfig; 
 
 import java.util.*;
 

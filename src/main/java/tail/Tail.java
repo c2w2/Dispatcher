@@ -4,10 +4,10 @@ package tail;
 //Import the Java classes
 import java.util.*;
 import java.io.*;
-
-//import kafka.javaapi.producer.Producer; 
-//import kafka.producer.KeyedMessage; 
-//import kafka.producer.ProducerConfig; 
+/*
+import kafka.javaapi.producer.Producer; 
+import kafka.producer.KeyedMessage; 
+import kafka.producer.ProducerConfig; 
 /**
 * Implements console-based log file tailing, or more specifically, tail following:
 * it is somewhat equivalent to the unix command "tail -f"
