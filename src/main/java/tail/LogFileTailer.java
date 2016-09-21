@@ -126,7 +126,7 @@ public class LogFileTailer
     		
     		
     		Properties props = new Properties(); 
-   	    props.put("metadata.broker.list", "192.168.1.37:9092,192.168.1.49:9092,192.168.1.50:9092"); 
+   	    props.put("metadata.broker.list", "kafka1:9092,kafka2:9092,kafka3:9092"); 
     	    props.put("serializer.class", "kafka.serializer.StringEncoder"); 
     	    ProducerConfig  producerConfig = new ProducerConfig(props); 
     	//    Producer<String, String> producer = new Producer<String, String>(producerConfig); 
