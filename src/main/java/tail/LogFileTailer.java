@@ -150,10 +150,10 @@ public class LogFileTailer
             String line = file.readLine();
             while( line != null )
             {
-           System.out.println(line);
+        //   System.out.println(line);
             	
-         //		KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
-         //    	producer.send(message); 
+         	KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
+             	producer.send(message); 
 
               this.fireNewLogFileLine( line );
               line = file.readLine();
