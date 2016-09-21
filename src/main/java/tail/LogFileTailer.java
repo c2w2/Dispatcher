@@ -120,17 +120,17 @@ public class LogFileTailer
       this.tailing = true;
       RandomAccessFile file = new RandomAccessFile( logfile, "r" );
       boolean k=true;
+    		Properties props = new Properties(); 
+    		props.put("metadata.broker.list", "kafka1:9092,kafka2:9092,kafka3:9092"); 
+    	    props.put("serializer.class", "kafka.serializer.StringEncoder"); 
+    	    ProducerConfig  producerConfig = new ProducerConfig(props); 
+    	    Producer<String, String> producer = new Producer<String, String>(producerConfig); 
+    		 
       while( this.tailing )
       {
     
     		
     		
-    		Properties props = new Properties(); 
-   	    props.put("metadata.broker.list", "kafka1:9092,kafka2:9092,kafka3:9092"); 
-    	    props.put("serializer.class", "kafka.serializer.StringEncoder"); 
-    	    ProducerConfig  producerConfig = new ProducerConfig(props); 
-    	//    Producer<String, String> producer = new Producer<String, String>(producerConfig); 
-    		 
         try
         {  
           // Compare the length of the file to the file pointer
@@ -152,8 +152,8 @@ public class LogFileTailer
             {
         //    System.out.println(line);
             	
-         //  		KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
-       //       	producer.send(message); 
+         //		KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
+         //    	producer.send(message); 
 
               this.fireNewLogFileLine( line );
               line = file.readLine();
