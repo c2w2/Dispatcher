@@ -130,7 +130,7 @@ public class LogFileTailer
     	    props.put("serializer.class", "kafka.serializer.StringEncoder"); 
     	    ProducerConfig  producerConfig = new ProducerConfig(props); 
     	    Producer<String, String> producer = new Producer<String, String>(producerConfig); 
-*/
+    		 */
         try
         {  
           // Compare the length of the file to the file pointer
@@ -150,7 +150,7 @@ public class LogFileTailer
             String line = file.readLine();
             while( line != null )
             {
-        //    System.out.println(line);b
+        //    System.out.println(line);
             	
          //  		KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
        //       	producer.send(message); 
