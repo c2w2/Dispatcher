@@ -2,11 +2,13 @@ package tail;
 
 import java.io.*;
 
+
 import kafka.javaapi.producer.Producer; 
 import kafka.producer.KeyedMessage; 
 import kafka.producer.ProducerConfig; 
 
 import java.util.*;
+
 
 /**
  * A log file tailer is designed to monitor a log file and send notifications
@@ -24,7 +26,12 @@ public class LogFileTailer
    */
   private long sampleInterval = 5000;
 
+  private StringTokenizer st;
   
+  private KeyedMessage<String, String> message ;
+
+  List<String> ip = new ArrayList<String>();
+ 
   
   /**
    * The log file to tail
@@ -129,8 +136,7 @@ public class LogFileTailer
       while( this.tailing )
       {
     
-    		
-    		
+    		    		
         try
         {  
           // Compare the length of the file to the file pointer
@@ -152,9 +158,44 @@ public class LogFileTailer
             {
            System.out.println(line);
             	
-         	KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", line);   
-             	producer.send(message); 
-
+           st=new StringTokenizer(line);
+           String tmp = st.nextToken();
+           boolean tt=true;
+           for(int i=0; i<ip.size(); i++)
+           {
+        	   if(tmp==ip.get(i))
+        	   {
+        		   if((i+1)%2==0)
+        		   {
+        				KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail2","a"+ line);   
+        		
+        				 tt=false;
+        		   }else 
+        		   {
+        			   KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", "a"+line);   
+               		
+       					tt=false;
+        		   }
+        	   }
+           }
+          
+           if(tt){
+        	   ip.add(tmp);
+        	  if( (ip.size() +1)%2==0)
+        	  {
+  				KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail2", "a"+line);   
+  		
+  				 
+  		   }else 
+  		   {
+  			   KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", "a"+line);   
+         		
+ 					
+  		   }
+           			
+           }
+           
+           		producer.send(message);
               this.fireNewLogFileLine( line );
               line = file.readLine();
             }
