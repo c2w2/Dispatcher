@@ -2,7 +2,6 @@ package tail;
 
 import java.io.*;
 
-
 import kafka.javaapi.producer.Producer; 
 import kafka.producer.KeyedMessage; 
 import kafka.producer.ProducerConfig; 
@@ -29,6 +28,8 @@ public class LogFileTailer
   private StringTokenizer st;
   
   private KeyedMessage<String, String> message ;
+  
+  private int num_topic;
 
   List<String> ip = new ArrayList<String>();
  
@@ -74,10 +75,11 @@ public class LogFileTailer
    *               file and continue tailing (true) or simply start tailing from the 
    *               end of the file
    */
-  public LogFileTailer( File file, long sampleInterval, boolean startAtBeginning )
+  public LogFileTailer( File file, long sampleInterval, boolean startAtBeginning , String num_topic)
   {
     this.logfile = file;
     this.sampleInterval = sampleInterval;
+    this.num_topic = Integer.parseInt(num_topic);
   }
 
   public void addLogFileTailerListener( LogFileTailerListener l )
@@ -132,7 +134,14 @@ public class LogFileTailer
     	    props.put("serializer.class", "kafka.serializer.StringEncoder"); 
     	    ProducerConfig  producerConfig = new ProducerConfig(props); 
     	    Producer<String, String> producer = new Producer<String, String>(producerConfig); 
-    		 
+     String[] topic_list = new String[num_topic];
+     
+     for(int i=0; i<num_topic; i++)
+     {
+    	 topic_list[i] = "tail" + Integer.toString(i+1);
+     }
+     
+     
       while( this.tailing )
       {
     
@@ -165,35 +174,17 @@ public class LogFileTailer
            {
         	   if(tmp==ip.get(i))
         	   {
-        		   if((i+1)%2==0)
-        		   {
-        				KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail2","a"+ line);   
-        		
-        				 tt=false;
-        		   }else 
-        		   {
-        			   KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", "a"+line);   
-               		
-       					tt=false;
-        		   }
+    			   KeyedMessage<String, String> message = new KeyedMessage<String, String>(topic_list[i%num_topic], "a"+line);   
+    			   tt=false;
         	   }
            }
           
            if(tt){
         	   ip.add(tmp);
-        	  if( (ip.size() +1)%2==0)
-        	  {
-  				KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail2", "a"+line);   
-  		
-  				 
-  		   }else 
-  		   {
-  			   KeyedMessage<String, String> message = new KeyedMessage<String, String>("tail", "a"+line);   
-         		
- 					
-  		   }
+        	 
+   			   KeyedMessage<String, String> message = new KeyedMessage<String, String>(topic_list[ip.size()%num_topic], "a"+line);   
            			
-           }
+        	  }
            
            		producer.send(message);
               this.fireNewLogFileLine( line );

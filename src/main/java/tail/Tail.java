@@ -22,9 +22,9 @@ private LogFileTailer tailer;
 /**
 * Creates a new Tail instance to follow the specified file
 */
-public Tail( String filename )
+public Tail( String filename , String num_t)
 {
- tailer = new LogFileTailer( new File( filename ), 1000, false );
+ tailer = new LogFileTailer( new File( filename ), 1000, false , num_t);
  tailer.addLogFileTailerListener( this );
  tailer.run_1();
 }
@@ -56,6 +56,7 @@ public static void main( String[] args )
 
      
 
- Tail tail = new Tail( args[ 0 ] );
+ Tail tail = new Tail( args[ 0 ] , args[1] );
+
 }
 }
